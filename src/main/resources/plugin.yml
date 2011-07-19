@@ -1,0 +1,8 @@
+name: LogPlayers
+main: de.maniacraft.logplayers.LogPlayers
+version: 0.2
+authors:
+  - ManiacTwister
+website: www.maniacraft.de
+description: >
+              Logs Joins and Quits in a File.

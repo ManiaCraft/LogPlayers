@@ -2,14 +2,11 @@ package de.maniacraft.logplayers;
 
 import de.maniacraft.logplayers.LogPlayersPlayerListener;
 
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.io.BufferedWriter;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.File;
 import java.io.FileWriter;
@@ -20,7 +17,6 @@ static final Logger log = Logger.getLogger("Minecraft");
 
     private static File folder;
     private static PluginDescriptionFile desc;
-    private static String playerFile;
     
     private final LogPlayersPlayerListener playerListener = new LogPlayersPlayerListener(this);
     @Override
@@ -31,17 +27,11 @@ static final Logger log = Logger.getLogger("Minecraft");
                 
         if (!setupFiles()) return;
         PluginManager pm = getServer().getPluginManager();
-        // pm.registerEvent(Event.Type.PLAYER_KICK, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
-         
-        log.log(Level.INFO,'[' + desc.getName() + "] version " + desc.getVersion() + " enabled!");
-        // log.log(Level.INFO, folder.getAbsolutePath() + File.separator + "players.txt");
+        pm.registerEvents(playerListener, this);
     }
     
     @Override
     public void onDisable() {
-        log.log(Level.INFO,'[' + desc.getName() + "] version " + desc.getVersion() + " disabled!");
     }
     
     public boolean savePlayer(String time, String player, String IP, int type)
@@ -59,7 +49,6 @@ static final Logger log = Logger.getLogger("Minecraft");
             writer.close();
             } catch (Exception e)
             {
-             System.out.println('[' + desc.getName() + "] version " + desc.getVersion() + " Something went wrong: " + e);
                 return false;
             }
             return true;
@@ -72,7 +61,6 @@ static final Logger log = Logger.getLogger("Minecraft");
          try {
          new File(folder.getAbsolutePath()).mkdir();
          } catch (Exception e) {
-                log.log(Level.WARNING,'[' + desc.getName() + "] version " + desc.getVersion() + " Failed to create LogPlayers folder!" + e);
                 return false;
          }
           
@@ -83,7 +71,6 @@ static final Logger log = Logger.getLogger("Minecraft");
             try {
                 file.createNewFile();
             } catch (Exception e) {
-                log.log(Level.WARNING,'[' + desc.getName() + "] version " + desc.getVersion() + " Failed to create players.txt file!" + e);
                 return false;
             }
         }
